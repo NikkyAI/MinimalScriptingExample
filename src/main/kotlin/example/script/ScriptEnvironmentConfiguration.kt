@@ -7,16 +7,15 @@ import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
 class ScriptEnvironmentConfiguration : ScriptCompilationConfiguration({
-//    defaultImports.append(
-//        "mypackage.dsl.*",
-//        "mypackage.core.*"
-//    )
+    defaultImports.append(
+        "example.Constants"
+    )
     jvm {
         // ensures that all dependencies are available to the script
         dependenciesFromCurrentContext()
     }
     // still broken ?
-    compilerOptions.append("-jvm-targe", "1.8")
+    compilerOptions.append("-jvm-target", "1.8")
 })
 
 

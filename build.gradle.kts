@@ -1,6 +1,20 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version Kotlin.version
     application
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        apiVersion = "1.3"
+        languageVersion = "1.3"
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf(
+            "-XXLanguage:+InlineClasses",
+            "-progressive"
+        )
+    }
 }
 
 repositories {
