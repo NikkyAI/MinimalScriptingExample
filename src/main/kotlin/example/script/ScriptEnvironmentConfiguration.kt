@@ -15,7 +15,7 @@ class ScriptEnvironmentConfiguration : ScriptCompilationConfiguration({
         dependenciesFromCurrentContext()
     }
     // still broken ?
-    compilerOptions.append("-jvm-target", "1.8")
+//    compilerOptions.append("-jvm-target", "1.8")
 })
 
 

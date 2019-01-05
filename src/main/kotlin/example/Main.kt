@@ -44,7 +44,10 @@ fun main(vararg args: String) {
         }
 
         // once more for good measure
-        compilerOptions.append("-jvm-target", "1.8")
+        compilerOptions.append("-jvm-target", "8",
+            "-XXLanguage:+InlineClasses",
+            "-progressive"
+        )
     }
     println("config entries")
     config.entries().forEach {
