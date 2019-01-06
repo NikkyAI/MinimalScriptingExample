@@ -8,6 +8,7 @@ import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.SourceCode
 import kotlin.script.experimental.api.compilerOptions
 import kotlin.script.experimental.api.constructorArgs
+import kotlin.script.experimental.api.importScripts
 import kotlin.script.experimental.api.resultOrNull
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
@@ -25,26 +26,24 @@ fun main(vararg args: String) {
     }
 
     val config = createJvmCompilationConfigurationFromTemplate<ScriptEnvironment> {
+
         jvm {
             dependenciesFromCurrentContext(wholeClasspath = true)
 
-            // this is a workaround that wll be able to be replaced with the upcoming
-            // importedScripts
-//            dependencies.append(
-//                JvmDependency(
-//                    File("/home/nikky/dev/Voodoo/samples/build/classes/kotlin/example.main")
-//                )
-//            )
+            importScripts.append(
+//                File("/home/nikky/dev/MinimalScriptingExample/src/main/kotlin/example/ID.kt").toScriptSource(),
+                File("/home/nikky/dev/MinimalScriptingExample/src/main/kotlin/example/Constants.kt").toScriptSource()
+            )
 
             // you need to specify the jdk location, should usually be the same as the JAVA_HOME env variable anyway
-
             val JDK_HOME = System.getenv("JAVA_HOME")
                 ?: throw IllegalStateException("please set JAVA_HOME to the installed jdk")
             jdkHome(File(JDK_HOME))
         }
 
-        // once more for good measure
-        compilerOptions.append("-jvm-target", "8",
+        // these are currently ignored: https://youtrack.jetbrains.com/issue/KT-27815
+        compilerOptions.append(
+            "-jvm-target", "8",
             "-XXLanguage:+InlineClasses",
             "-progressive"
         )
