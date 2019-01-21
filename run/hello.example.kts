@@ -11,4 +11,8 @@ val hello = Hello("World")
 println(hello)
 
 // this line will break
-+(Constants.a)
+println(Constants.a)
+
+override fun implementMe() {
+    println("does not work")
+}
