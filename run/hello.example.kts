@@ -10,5 +10,5 @@ val hello = Hello("World")
 
 println(hello)
 
-// this line will break
+// this line will break (without importScripts) due to inlining
 +(Constants.a)
