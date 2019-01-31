@@ -1,3 +1,4 @@
+import org.apache.tools.ant.util.JavaEnvUtils
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -18,21 +19,19 @@ tasks.withType<KotlinCompile> {
 }
 
 repositories {
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-dev/") {
-        name = "Kotlin Dev"
-    }
-    maven(url = "https://dl.bintray.com/kotlin/kotlin-eap/") {
-        name = "Kotlin EAP"
-    }
     mavenCentral()
     jcenter()
 }
 
 dependencies {
     implementation(kotlin("stdlib", Kotlin.version))
-    implementation(kotlin("script-util", Kotlin.version))
+
+    // script definition
     implementation(kotlin("scripting-jvm", Kotlin.version))
-    implementation(kotlin("scripting-jvm-host", Kotlin.version))
+
+    // host
+    implementation(kotlin("script-util", Kotlin.version))
+    implementation(kotlin("scripting-jvm-host-embeddable", Kotlin.version))
 
     // not strictly necessary
     implementation(kotlin("reflect", Kotlin.version))
@@ -42,7 +41,12 @@ application {
     mainClassName = "example.MainKt"
 }
 
+val javac = File(JavaEnvUtils.getJdkExecutable("javac"))
+val jdkHome = javac.parentFile.parentFile
+logger.lifecycle("jdkHome: $jdkHome")
+
 val run = tasks.getByName<JavaExec>("run") {
     args = listOf("hello.example.kts")
     workingDir = File("run")
+    systemProperty("jdkHome", jdkHome.path)
 }
