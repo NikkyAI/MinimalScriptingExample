@@ -14,7 +14,7 @@ fun main(vararg args: String) {
     }
 
     // use a cacheDir in the OS specific directories in production PLEASE
-    val cacheDir = File("..").resolve("builds").resolve(".cache")
+    val cacheDir = File("..").resolve("build").resolve(".cache")
 
     val host = createJvmScriptingHost(cacheDir)
     val scriptFile = File(".").resolve(scriptPath).absoluteFile
@@ -23,4 +23,7 @@ fun main(vararg args: String) {
     val scriptEnv = host.evalScript<ScriptEnvironment>(scriptFile, args = *arrayOf(workingDir))
 
     println("scriptEnv: $scriptEnv")
+
+    val id = scriptFile.name.substringBeforeLast(".example.kts")
+    scriptEnv.doThings(id)
 }

@@ -11,5 +11,10 @@ val hello = Hello("World")
 println(hello)
 
 fun doThings(id: String) {
-    println("doThings: $id")
+    println("doWork: $id")
 }
+
+/*
+works **without** a override specified,
+IDE cannot help with autocompletion or check correctness
+ */

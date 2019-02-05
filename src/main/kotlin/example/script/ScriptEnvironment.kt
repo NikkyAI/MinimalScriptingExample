@@ -18,4 +18,8 @@ open class ScriptEnvironment(
         println(this)
         return this
     }
+
+    open fun doThings(id: String) {
+        TODO("please override doThings(id: String)")
+    }
 }

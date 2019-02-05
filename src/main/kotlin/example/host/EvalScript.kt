@@ -36,6 +36,8 @@ inline fun <reified T: Any> BasicJvmScriptingHost.evalScript(
     importScripts: List<SourceCode> = listOf(),
     compilationConfig: ScriptCompilationConfiguration = createJvmCompilationConfigurationFromTemplate<T> {
         jvm {
+            // when yyou can run your script-host from a fat jar, you can set this to
+            // `wholeClasspath = false` to reduce dependencies and speed up script compilation
             dependenciesFromCurrentContext(wholeClasspath = true)
 
             importScripts(importScripts)

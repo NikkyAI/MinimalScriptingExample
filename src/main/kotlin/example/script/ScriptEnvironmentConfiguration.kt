@@ -21,10 +21,9 @@ class ScriptEnvironmentConfiguration : ScriptCompilationConfiguration({
     )
     jvm {
         // ensures that all dependencies are available to the script
-//        dependenciesFromCurrentContext()
+        dependenciesFromCurrentContext(wholeClasspath = false)
     }
-    // still broken ?
-//    compilerOptions.append("-jvm-target", "1.8")
+
     refineConfiguration {
         onAnnotations(Import::class) { context: ScriptConfigurationRefinementContext ->
             val sources = context.collectedData?.get(ScriptCollectedData.foundAnnotations)
