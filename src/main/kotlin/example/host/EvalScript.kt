@@ -40,9 +40,9 @@ inline fun <reified T: Any> BasicJvmScriptingHost.evalScript(
 
             importScripts(importScripts)
 
-            val JDK_HOME = System.getProperty("jdkHome") ?: System.getenv("JAVA_HOME")
-                ?: throw IllegalStateException("please pass -DjdkHome=path/to/jdk or please set JAVA_HOME to the installed jdk")
-            jdkHome(File(JDK_HOME))
+//            val JDK_HOME = System.getProperty("jdkHome") ?: System.getenv("JAVA_HOME")
+//                ?: throw IllegalStateException("please pass -DjdkHome=path/to/jdk or please set JAVA_HOME to the installed jdk")
+//            jdkHome(File(JDK_HOME))
         }
     }
 ): T {

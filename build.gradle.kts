@@ -41,12 +41,12 @@ application {
     mainClassName = "example.MainKt"
 }
 
-val javac = File(JavaEnvUtils.getJdkExecutable("javac"))
-val jdkHome = javac.parentFile.parentFile
-logger.lifecycle("jdkHome: $jdkHome")
+//val javac = File(JavaEnvUtils.getJdkExecutable("javac"))
+//val jdkHome = javac.parentFile.parentFile
+//logger.lifecycle("jdkHome: $jdkHome")
 
 val run = tasks.getByName<JavaExec>("run") {
     args = listOf("hello.example.kts")
     workingDir = File("run")
-    systemProperty("jdkHome", jdkHome.path)
+//    systemProperty("jdkHome", jdkHome.path)
 }
