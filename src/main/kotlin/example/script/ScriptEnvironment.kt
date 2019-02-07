@@ -20,6 +20,6 @@ open class ScriptEnvironment(
     }
 
     open fun doThings(id: String) {
-        TODO("please override doThings(id: String)")
+        //TODO("please override doThings(id: String)")
     }
 }

@@ -5,7 +5,6 @@ import kotlin.script.experimental.api.ScriptCollectedData
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptConfigurationRefinementContext
 import kotlin.script.experimental.api.asSuccess
-import kotlin.script.experimental.api.compilerOptions
 import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.api.foundAnnotations
 import kotlin.script.experimental.api.importScripts
@@ -15,7 +14,7 @@ import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
 class ScriptEnvironmentConfiguration : ScriptCompilationConfiguration({
-    defaultImports(Import::class)
+    defaultImports(Import::class, TestAnnotation::class)
     defaultImports.append(
         "example.Constants"
     )
@@ -35,6 +34,34 @@ class ScriptEnvironmentConfiguration : ScriptCompilationConfiguration({
             ScriptCompilationConfiguration(context.compilationConfiguration) {
                 importScripts.append(sources)
             }.asSuccess()
+        }
+
+        onAnnotations(TestAnnotation::class) { context ->
+            val annotations = context.collectedData?.get(ScriptCollectedData.foundAnnotations) ?: return@onAnnotations context.compilationConfiguration.asSuccess()
+
+            val list = mutableListOf<TestAnnotation>()
+
+            for (an in annotations) {
+                println(an)
+                when(an) {
+                    is TestAnnotation -> {
+                        list.add(an)
+                        println(an.toString())
+                    }
+                    else -> {
+                        (an::class.members.find { it.name == "error" }?.call(an) as Exception?)?.printStackTrace() // from InvalidScriptAnnotation
+                    }
+
+                }
+            }
+
+            if(list.isNotEmpty()) {
+                return@onAnnotations ScriptCompilationConfiguration(context.compilationConfiguration) {
+
+                }.asSuccess()
+            }
+
+            return@onAnnotations context.compilationConfiguration.asSuccess()
         }
     }
 })
