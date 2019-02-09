@@ -1,23 +1,21 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.apache.tools.ant.util.JavaEnvUtils
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version Kotlin.version
     kotlin("plugin.scripting") version Kotlin.version
-    id("com.github.johnrengelman.shadow") version "4.0.0" apply false
-//    application
 }
 
-allprojects {
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            apiVersion = "1.3"
-            languageVersion = "1.3"
-            jvmTarget = "1.8"
-        }
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        apiVersion = "1.3"
+        languageVersion = "1.3"
+        jvmTarget = "1.8"
+        freeCompilerArgs = listOf(
+            "-XXLanguage:+InlineClasses",
+            "-progressive"
+        )
     }
-
 }
 
 repositories {
@@ -26,22 +24,20 @@ repositories {
     jcenter()
 }
 
+
 dependencies {
-    implementation(kotlin("stdlib", Kotlin.version))
+//    implementation(kotlin("stdlib", Kotlin.version))
 //    api(files(shadowJar.archiveFile))
-//    implementation(project("host"))
     implementation(group = "moe.nikky", name = "script-host", version = "1.0-SNAPSHOT")
 }
 
-//val shadowJar = tasks.getByPath("host:shadowJar") as ShadowJar
-
 val buildHost = task<GradleBuild>("buildHost") {
-    tasks = listOf("publishToMavenLocal", "shadowJar")
-    buildFile = rootDir.resolve("host").resolve("build.gradle.kts")
+    tasks = listOf("host:publishToMavenLocal", "host:shadowJar")
+    buildFile = rootDir.parentFile.resolve("build.gradle.kts")
     dir = rootDir.resolve("host")
 }
 
-val jarFile = rootDir.resolve("host")
+val jarFile = rootDir.parentFile.resolve("host")
     .resolve("build").resolve("libs")
     .resolve("script-host.jar")
 
