@@ -1,8 +1,8 @@
 @file:Import("TestInclude.kt")
 
-//override fun doThings(id: String) {
-//    println("doWork: $id")
-//}
+override fun doThings(id: String) {
+    println("doWork: $id")
+}
 
 /*
 does not compile with override specified

@@ -13,8 +13,4 @@ val hello = Hello("World")
 
 println(hello)
 
-//fun doThings(id: String) {
-//    println("my id is `$id`")
-//}
-
 println("directory: $directory")
