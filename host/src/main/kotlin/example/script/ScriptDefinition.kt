@@ -21,5 +21,6 @@ open class ScriptDefinition(
 
     open fun doThings(id: String) {
         //TODO("please override doThings(id: String)")
+        println("default doThings(\"$id\")")
     }
 }

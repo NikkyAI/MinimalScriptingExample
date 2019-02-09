@@ -75,7 +75,6 @@ fun SourceCode.Location.posToString() = "(${start.line}, ${start.col})"
 inline fun <reified T> ResultWithDiagnostics<EvaluationResult>.get(scriptFile: File): T {
 
     for (report in reports) {
-        println(report)
         val severityIndicator = when (report.severity) {
             ScriptDiagnostic.Severity.FATAL -> "fatal"
             ScriptDiagnostic.Severity.ERROR -> "e"

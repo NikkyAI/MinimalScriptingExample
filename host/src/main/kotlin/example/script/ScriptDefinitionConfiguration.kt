@@ -1,5 +1,6 @@
 package example.script
 
+import example.annotations.ArrayTest
 import example.annotations.DefaultTest
 import example.annotations.Import
 import kotlin.script.experimental.api.ScriptCollectedData
@@ -18,7 +19,7 @@ import kotlin.script.experimental.host.FileScriptSource
 import kotlin.script.experimental.host.toScriptSource
 
 class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
-    defaultImports(Import::class, DefaultTest::class)
+    defaultImports(Import::class, DefaultTest::class, ArrayTest::class)
     defaultImports.append(
         "example.Constants"
     )
@@ -28,7 +29,7 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
     }
 
     refineConfiguration {
-        onAnnotations(Import::class, DefaultTest::class) { context ->
+        onAnnotations(Import::class, DefaultTest::class, ArrayTest::class) { context ->
             println("on annotations")
             val scriptFile = (context.script as FileScriptSource).file
             val rootDir = scriptFile.parentFile.parentFile
@@ -49,6 +50,8 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
             val defaultAnnotations = annotations.filterIsInstance(DefaultTest::class.java)
             reports += ScriptDiagnostic("defaultAnnotations: $defaultAnnotations", ScriptDiagnostic.Severity.INFO)
 
+            val arrayAnnotations = annotations.filterIsInstance(ArrayTest::class.java)
+            reports += ScriptDiagnostic("arrayAnnotations: $arrayAnnotations", ScriptDiagnostic.Severity.INFO)
 
             val sources = importAnnotations.map {
                 rootDir.resolve("include").resolve(it.source)

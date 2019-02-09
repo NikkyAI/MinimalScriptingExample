@@ -1,5 +1,5 @@
 @file:Import("TestInclude.kt")
-@file:DefaultTest(a = 2)
+@file:DefaultTest()
 
 import example.annotations.DefaultTest
 
