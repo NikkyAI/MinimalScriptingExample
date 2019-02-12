@@ -1,7 +1,9 @@
 package example.script
 
+import example.TestEnum
 import example.annotations.ArrayTest
 import example.annotations.DefaultTest
+import example.annotations.EnumTest
 import example.annotations.Import
 import kotlin.script.experimental.api.ScriptCollectedData
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
@@ -20,7 +22,13 @@ import kotlin.script.experimental.host.FileScriptSource
 import kotlin.script.experimental.host.toScriptSource
 
 class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
-    defaultImports(Import::class, DefaultTest::class, ArrayTest::class)
+    defaultImports(
+        Import::class,
+        DefaultTest::class,
+        ArrayTest::class,
+        EnumTest::class,
+        TestEnum::class
+    )
     defaultImports.append(
         "example.Constants"
     )
@@ -30,7 +38,7 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
     }
 
     refineConfiguration {
-        onAnnotations(Import::class, DefaultTest::class, ArrayTest::class) { context ->
+        onAnnotations(Import::class, DefaultTest::class, ArrayTest::class, EnumTest::class) { context ->
             println("on annotations")
             val scriptFile = (context.script as FileScriptSource).file
             val rootDir = scriptFile.parentFile.parentFile
@@ -53,6 +61,9 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
 
             val arrayAnnotations = annotations.filterIsInstance(ArrayTest::class.java)
             reports += ScriptDiagnostic("arrayAnnotations: $arrayAnnotations", ScriptDiagnostic.Severity.DEBUG)
+
+            val enumAnnotations = annotations.filterIsInstance(EnumTest::class.java)
+            reports += ScriptDiagnostic("enumAnnotations: $enumAnnotations", ScriptDiagnostic.Severity.INFO)
 
             val sources = importAnnotations.map {
                 rootDir.resolve("include").resolve(it.source)

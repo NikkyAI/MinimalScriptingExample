@@ -15,4 +15,4 @@ println(hello)
 
 println("directory: $directory")
 
-coroutineTest()
+//coroutineTest()
