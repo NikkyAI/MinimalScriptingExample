@@ -14,3 +14,5 @@ val hello = Hello("World")
 println(hello)
 
 println("directory: $directory")
+
+coroutineTest()

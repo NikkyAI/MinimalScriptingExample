@@ -15,6 +15,7 @@ import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 import org.jetbrains.kotlin.script.InvalidScriptResolverAnnotation
 import kotlin.script.experimental.api.ResultWithDiagnostics
+import kotlin.script.experimental.api.refineConfigurationOnAnnotations
 import kotlin.script.experimental.host.FileScriptSource
 import kotlin.script.experimental.host.toScriptSource
 
@@ -45,13 +46,13 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
             } ?: return@onAnnotations context.compilationConfiguration.asSuccess(reports)
 
             val importAnnotations = annotations.filterIsInstance(Import::class.java)
-            reports += ScriptDiagnostic("importAnnotations: $importAnnotations", ScriptDiagnostic.Severity.INFO)
+            reports += ScriptDiagnostic("importAnnotations: $importAnnotations", ScriptDiagnostic.Severity.DEBUG)
 
             val defaultAnnotations = annotations.filterIsInstance(DefaultTest::class.java)
-            reports += ScriptDiagnostic("defaultAnnotations: $defaultAnnotations", ScriptDiagnostic.Severity.INFO)
+            reports += ScriptDiagnostic("defaultAnnotations: $defaultAnnotations", ScriptDiagnostic.Severity.DEBUG)
 
             val arrayAnnotations = annotations.filterIsInstance(ArrayTest::class.java)
-            reports += ScriptDiagnostic("arrayAnnotations: $arrayAnnotations", ScriptDiagnostic.Severity.INFO)
+            reports += ScriptDiagnostic("arrayAnnotations: $arrayAnnotations", ScriptDiagnostic.Severity.DEBUG)
 
             val sources = importAnnotations.map {
                 rootDir.resolve("include").resolve(it.source)

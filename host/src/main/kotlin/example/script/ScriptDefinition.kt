@@ -1,6 +1,7 @@
 package example.script
 
 import example.ID
+import kotlinx.coroutines.delay
 import java.io.File
 import kotlin.script.experimental.annotations.KotlinScript
 
@@ -22,5 +23,9 @@ open class ScriptDefinition(
     open fun doThings(id: String) {
         //TODO("please override doThings(id: String)")
         println("default doThings(\"$id\")")
+    }
+
+    suspend fun coroutineTest() {
+        delay(10)
     }
 }
