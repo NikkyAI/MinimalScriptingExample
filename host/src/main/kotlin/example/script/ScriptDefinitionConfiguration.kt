@@ -5,6 +5,8 @@ import example.annotations.ArrayTest
 import example.annotations.DefaultTest
 import example.annotations.EnumTest
 import example.annotations.Import
+import org.jetbrains.kotlin.script.InvalidScriptResolverAnnotation
+import kotlin.script.experimental.api.ResultWithDiagnostics
 import kotlin.script.experimental.api.ScriptCollectedData
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptDiagnostic
@@ -13,13 +15,10 @@ import kotlin.script.experimental.api.defaultImports
 import kotlin.script.experimental.api.foundAnnotations
 import kotlin.script.experimental.api.importScripts
 import kotlin.script.experimental.api.refineConfiguration
-import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
-import kotlin.script.experimental.jvm.jvm
-import org.jetbrains.kotlin.script.InvalidScriptResolverAnnotation
-import kotlin.script.experimental.api.ResultWithDiagnostics
-import kotlin.script.experimental.api.refineConfigurationOnAnnotations
 import kotlin.script.experimental.host.FileScriptSource
 import kotlin.script.experimental.host.toScriptSource
+import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
+import kotlin.script.experimental.jvm.jvm
 
 class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
     defaultImports(
@@ -38,6 +37,20 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
     }
 
     refineConfiguration {
+        beforeParsing { context ->
+            val reports = mutableListOf<ScriptDiagnostic>()
+            reports += ScriptDiagnostic("beforeParsing time: ${System.currentTimeMillis()}", ScriptDiagnostic.Severity.INFO)
+
+            context.compilationConfiguration.asSuccess(reports)
+        }
+
+        beforeCompiling { context ->
+            val reports = mutableListOf<ScriptDiagnostic>()
+            reports += ScriptDiagnostic("beforeCompiling time: ${System.currentTimeMillis()}", ScriptDiagnostic.Severity.INFO)
+
+            context.compilationConfiguration.asSuccess(reports)
+        }
+
         onAnnotations(Import::class, DefaultTest::class, ArrayTest::class, EnumTest::class) { context ->
             println("on annotations")
             val scriptFile = (context.script as FileScriptSource).file
@@ -47,8 +60,11 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
             val annotations = context.collectedData?.get(ScriptCollectedData.foundAnnotations)?.also { annotations ->
                 reports += ScriptDiagnostic("annotations: $annotations", ScriptDiagnostic.Severity.INFO)
 
-                if(annotations.any { it is InvalidScriptResolverAnnotation }) {
-                    reports += ScriptDiagnostic("InvalidScriptResolverAnnotation found", ScriptDiagnostic.Severity.ERROR)
+                if (annotations.any { it is InvalidScriptResolverAnnotation }) {
+                    reports += ScriptDiagnostic(
+                        "InvalidScriptResolverAnnotation found",
+                        ScriptDiagnostic.Severity.ERROR
+                    )
                     return@onAnnotations ResultWithDiagnostics.Failure(reports)
                 }
             } ?: return@onAnnotations context.compilationConfiguration.asSuccess(reports)
@@ -70,7 +86,7 @@ class ScriptDefinitionConfiguration : ScriptCompilationConfiguration({
             }.distinct()
 
             return@onAnnotations ScriptCompilationConfiguration(context.compilationConfiguration) {
-                if(sources.isNotEmpty()) {
+                if (sources.isNotEmpty()) {
                     importScripts.append(sources.map { it.toScriptSource() })
                     reports += ScriptDiagnostic(
                         "importScripts += ${sources.map { it.relativeTo(rootDir) }}",
