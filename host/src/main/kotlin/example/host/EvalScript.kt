@@ -64,8 +64,10 @@ inline fun <reified T: Any> BasicJvmScriptingHost.evalScript(
 
     val scriptSource = scriptFile.toScriptSource()
 
-    println("compiling script, please be patient")
+    println("evaluating script, please be patient")
+    println("\n")
     val result = eval(scriptSource, compilationConfig, evaluationConfig)
+    println("\n")
 
     return result.get<T>(scriptFile)
 }
@@ -74,6 +76,7 @@ fun SourceCode.Location.posToString() = "(${start.line}, ${start.col})"
 
 inline fun <reified T> ResultWithDiagnostics<EvaluationResult>.get(scriptFile: File): T {
 
+    println("reports")
     for (report in reports) {
         val severityIndicator = when (report.severity) {
             ScriptDiagnostic.Severity.FATAL -> "fatal"

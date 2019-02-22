@@ -23,7 +23,9 @@ fun main(vararg args: String) {
     val workingDir = File(System.getProperty("user.dir")).absoluteFile!!
     val scriptEnv = host.evalScript<ScriptDefinition>(scriptFile, args = *arrayOf(workingDir))
 
+    println("\n")
     println("scriptEnv: $scriptEnv")
+    println("\n")
 
     val id = scriptFile.name.substringBeforeLast(".example.kts")
     scriptEnv.doThings(id)

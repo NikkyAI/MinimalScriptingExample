@@ -3,16 +3,22 @@
 
 import example.annotations.DefaultTest
 
-class Hello(val content: String = "World") {
+class HelloWorld(val content: String = "World") {
     override fun toString(): String {
         return "Hello $content"
     }
 }
 
-val hello = Hello("World")
-
-println(hello)
-
 println("directory: $directory")
 
-//coroutineTest()
+val foo = HelloWorld("World")
+val bar = "World"
+
+println(foo)
+println("Hello $bar")
+
+// no override ???
+f       un doThings(id: String) {
+    println("custom implementation of `doThings`")
+    println("scriptfile id is '$id'")
+}

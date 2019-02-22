@@ -58,6 +58,12 @@ runDir
             workingDir = runDir
             main = "example.MainKt"
             classpath(jarFile)
+            doFirst {
+                logger.lifecycle("\n")
+                logger.lifecycle("executing")
+                logger.lifecycle("""java -jar "${jarFile.path}" ${(args as List<String>).joinToString(" ")}""")
+                logger.lifecycle("\n")
+            }
         }
     }
 
