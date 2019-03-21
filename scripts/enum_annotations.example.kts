@@ -1,5 +1,6 @@
 @file:EnumTest(TestEnum.ONE)
 
 import example.TestEnum
+import example.annotations.EnumTest
 
-println("-----> arrays work now")
+println("-----> enums annotations work now")

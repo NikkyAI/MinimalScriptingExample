@@ -18,7 +18,7 @@ println(foo)
 println("Hello $bar")
 
 // no override ???
-f       un doThings(id: String) {
+fun doThings(id: String) {
     println("custom implementation of `doThings`")
     println("scriptfile id is '$id'")
 }

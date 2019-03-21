@@ -2,4 +2,4 @@
 
 import example.annotations.ArrayTest
 
-println("-----> arrays work now")
+println("-----> arrays in annotations work now")
